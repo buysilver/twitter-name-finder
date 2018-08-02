@@ -149,7 +149,7 @@ if ARGV.size > 0
       flags[:skip_until_this_name] = s
     end
     o.on("-h", "--help", "Display the complete help message") do
-      puts opts
+      puts o
       exit
     end
   end.parse!
