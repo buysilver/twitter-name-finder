@@ -7,7 +7,7 @@ require 'optparse'
 class Twitter
   def initialize
     @csrf_token = self.get_csrf_token
-    @backoff = 0.5 # seconds to wait before hitting Twitter again
+    @backoff = 2.0 # seconds to wait before hitting Twitter again
   end
   
   def get_csrf_token
@@ -28,7 +28,9 @@ class Twitter
     when 429
       @backoff *= 2
       puts "You have been hitting Twitter too hard. "\
-           "Waiting #{@backoff} seconds before making a request from now on."
+           "Waiting #{@backoff} seconds before making a request from now on. "\
+           "But first we're actually waiting 5 minutes for the dust to settle."
+      sleep 60*5 # Wait 5 minutes before even trying again
       self.available? name # TODO potential stack overflow
     else
       puts "HTTP status code = #{r.code}"
